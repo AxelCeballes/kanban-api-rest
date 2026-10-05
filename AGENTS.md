@@ -37,7 +37,7 @@ src/
 ├── app.js         # Express: cors, json, montaje de routers y errorHandler
 └── server.js      # carga dotenv, conecta a MongoDB y hace listen
 tests/             # reservada (por ahora solo .gitkeep)
-postman_collection.json   # colección de Postman (raíz del repo)
+postman_collection.json   # colección de Postman (raíz del repo; pendiente, aún no existe)
 ```
 
 - NO crear carpetas ni archivos fuera de esta estructura (`utils/`, `services/`, `config/`, etc.) sin pedirlo.
@@ -155,13 +155,14 @@ Cada fase se considera terminada solo cuando las peticiones correspondientes de 
 
 ## 14. Estado actual y deuda técnica conocida
 
-Fases 1 a 3 implementadas. Pendiente, en orden de prioridad:
+Estado verificado contra el código el 2026-10-05. Fases 1 a 3 implementadas; fase 4 parcial (README y `.env.example` hechos; faltan la colección de Postman, las pruebas finales y el despliegue). El README describe el comportamiento **actual** e incluye una sección «Limitaciones conocidas»: al resolver un punto de esta lista hay que actualizar también ese README. Pendiente, en orden de prioridad:
 
-1. **Body ausente → 500.** En Express 5, un POST/PATCH sin cuerpo deja `req.body` en `undefined` y la desestructuración lanza `TypeError`. Debe ser `400`.
+1. **Body ausente → 500.** En Express 5, un POST/PATCH sin cuerpo deja `req.body` en `undefined` y la desestructuración lanza `TypeError`. Debe ser `400`. Afecta a `createBoard`, `createColumn`, `createTicket` y `updateTicket`.
 2. **Tipos no string → 500.** `name.trim()` y `title.trim()` fallan si el valor es número, objeto o arreglo. Validar `typeof === 'string'`. Hacer lo mismo con `column` en el PATCH antes de usarlo en `Column.findOne` (evita que se cuelen operadores como `{ "$ne": null }`).
-3. **Hooks con `next`.** Los `pre('deleteOne')` de `Board` y `Column` reciben y llaman `next`; en Mongoose 9 esto debe quitarse. Verificar el DELETE de columna contra la base de datos.
+3. **Hooks con `next`.** Los `pre('deleteOne')` de `Board` y `Column` reciben y llaman `next`; en Mongoose 9 esto debe quitarse. Verificar el DELETE de columna contra la base de datos (riesgo: el hook borra los tickets, falla al llamar `next` y la columna queda sin borrar con un `500`). Hasta verificarlo, el README no afirma que la cascada funcione.
 4. **Rutas inexistentes.** Devuelven el HTML por defecto de Express; falta un 404 JSON `{ error }` antes del `errorHandler`.
 5. **`server.js`.** Si falla la conexión, solo loguea y el proceso termina con código 0; debe hacer `process.exit(1)`. Además, la URI por defecto (`kanban_db`) no coincide con `.env.example` (`kanban`).
-6. **`errorHandler`.** Loguea el stack de todos los errores, incluidos los 400; limitarlo a los 500.
+6. **`errorHandler`.** Loguea el stack de todos los errores, incluidos los 400; limitarlo a los 500. Para errores con `statusCode` (JSON malformado) devuelve el mensaje del parser en inglés; la convención del proyecto es mensajes en español.
 7. **Consultas repetidas.** `getBoardById` y `deleteColumn` vuelven a buscar lo que `parentCheck` ya cargó en `req.board` / `req.column`.
-8. **Entregables faltantes:** `postman_collection.json` no está en el repo y el README estaba vacío. Corregir también `package.json` (`main` apunta a `index.js`, `description` vacía).
+8. **`column` vacío en el PATCH.** `if (newColumnId)` ignora en silencio `""` o `null` y responde `200` sin mover el ticket; debería validarse como string no vacío (o `400`).
+9. **Entregables faltantes:** `postman_collection.json` no está en el repo (el README lo indica como pendiente). Corregir también `package.json` (`main` apunta a `index.js`, `description` vacía) y agregar la URL de despliegue en el README.
