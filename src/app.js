@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-
 const boardRoutes = require('./routes/boardRoutes');
 const columnRoutes = require('./routes/columnRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
