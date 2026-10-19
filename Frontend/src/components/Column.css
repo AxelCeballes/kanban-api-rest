@@ -48,3 +48,9 @@
   border-top: 1px dashed var(--border-color);
   padding: 0.5rem 0.6rem;
 }
+
+/* Estado visual cuando una tarjeta se arrastra por encima de la línea */
+.column--dropping {
+  border-color: var(--accent-color);
+  box-shadow: inset 0 0 0 1px var(--accent-color);
+}

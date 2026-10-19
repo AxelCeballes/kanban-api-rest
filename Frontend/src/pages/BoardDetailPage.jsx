@@ -34,6 +34,10 @@ export default function BoardDetailPage() {
   });
   const [pendingDelete, setPendingDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  // Drag & drop nativo: la tarjeta arrastrada { ticket, fromColumnId } y la
+  // línea que esta resaltada como destino (Fase 4).
+  const [dragState, setDragState] = useState(null);
+  const [dropTargetId, setDropTargetId] = useState(null);
 
   const loadBoard = useCallback(async () => {
     setState({ status: 'loading', board: null, columns: [], error: null });
@@ -93,6 +97,39 @@ export default function BoardDetailPage() {
     }
   }
 
+  function handleTicketDragStart(ticket, fromColumnId, event) {
+    // dataTransfer con algo es obligatorio para que el drag arranque (Firefox);
+    // el estado del React manda en el resto de la lógica.
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', ticket._id);
+    setDragState({ ticket, fromColumnId });
+  }
+
+  function handleTicketDragEnd() {
+    setDragState(null);
+    setDropTargetId(null);
+  }
+
+  function handleColumnDragEnter(columnId) {
+    if (dragState) setDropTargetId(columnId);
+  }
+
+  function handleColumnDragLeave(event, columnId) {
+    // Ignorar los leave/enter internos (los hijos disparan dragleave)
+    if (event.currentTarget.contains(event.relatedTarget)) return;
+    setDropTargetId((current) => (current === columnId ? null : current));
+  }
+
+  function handleColumnDrop(event, columnId) {
+    event.preventDefault(); // obligatorio para permitir drop; también evita
+    // que archivos sueltos por accidente naveguen la página
+    setDropTargetId(null);
+    if (!dragState || dragState.fromColumnId === columnId) return;
+    const { ticket, fromColumnId } = dragState;
+    setDragState(null); // drag end implícito al soltar
+    handleMove(ticket, fromColumnId, columnId); // misma lógica del select
+  }
+
   return (
     <main className="board-page">
       <header className="board-page__header">
@@ -149,6 +186,16 @@ export default function BoardDetailPage() {
                   key={column._id}
                   name={column.name}
                   onDelete={() => setPendingDelete(column)}
+                  isDropTarget={dropTargetId === column._id}
+                  onDragOverTicket={(event) => {
+                    event.preventDefault();
+                    event.dataTransfer.dropEffect = 'move';
+                  }}
+                  onDragEnterTicket={() => handleColumnDragEnter(column._id)}
+                  onDragLeaveTicket={(event) =>
+                    handleColumnDragLeave(event, column._id)
+                  }
+                  onDropTicket={(event) => handleColumnDrop(event, column._id)}
                   footer={
                     <AddTicketForm
                       boardId={boardId}
@@ -162,6 +209,9 @@ export default function BoardDetailPage() {
                     columnId={column._id}
                     columns={state.columns}
                     onMove={handleMove}
+                    draggedTicketId={dragState?.ticket._id ?? null}
+                    onTicketDragStart={handleTicketDragStart}
+                    onTicketDragEnd={handleTicketDragEnd}
                   />
                 </Column>
               ))}

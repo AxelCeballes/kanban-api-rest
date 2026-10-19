@@ -43,7 +43,7 @@ conserva los requerimientos de la consigna y **registra los desvíos** en §D.
 | Columnas como líneas con 🗑 y + | GET board (columns) / POST column / DELETE column | DELETE con confirmación “esto borra N tickets” (cascada del backend); animación de la línea al desaparecer |
 | Crear tickets en columna | POST tickets | 400 del backend muestreado inline en el input |
 | Editar ticket (title/description) | PATCH tickets con `{title?, description?}` | `priority` NO EXISTE: no se inventa |
-| Mover ticket | PATCH tickets con `{ column }` | Drag & drop nativo + fallback `<select>`; optimista con reversión |
+| Mover ticket | PATCH tickets con `{ column }` | Drag & drop nativo entre líneas (Fase 4) + fallback `<select>` accesible/touch; optimista con reversión |
 | Feedback por HTTP | — | 201/200 verde, 404 amarillo, 400/500 rojo con `body.error` literal |
 | 404 por repetición del mismo movimiento | PATCH | UX descrita en el concepto: la UI se actualiza al estado final (removiendo la copia de la columna origen) sin error; otros 404/400 sí muestran Toast |
 | Modo demo end-to-end | Todos | Fase 5: reproduce el flujo de la colección Postman mostrando request/response |

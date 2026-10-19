@@ -29,9 +29,10 @@ npm run build            # build de producción en dist/
 - **Rehydrator:** la API no lista tickets (solo columnas). Los tickets que la sesión
   crea/edita/mueve se acumulan en memoria (`src/features/tickets/ticketStore.js`);
   borrar una columna descarta su caché. Limitación documentada, no simulada.
-- **Mover tickets:** optimista con reversión ante 400/404 + Toast. El PATCH repetido
-  idéntico (404 del contrato) se resuelve silenciosamente: el ticket ya vive en la
-  columna destino. Fallback humble: `<select>` "Mover a…" por ticket.
+- **Mover tickets:** drag & drop nativo entre líneas (HTML5, sin librerías) + fallback
+  accesible `<select>` "Mover a…" por ticket (única vía en touch móvil). Optimista con
+  reversión ante 400/404 + Toast; el PATCH repetido idéntico (404 del contrato) se
+  resuelve silenciosamente: el ticket ya vive en la columna destino.
 - **Feedback por HTTP:** 201/200 verde, avisos ámbar, errores rojos con el mensaje
   literal `"error": "..."` del backend (nunca se inventan textos).
 - **Borrar columna:** modal de confirmación con la advertencia de cascada

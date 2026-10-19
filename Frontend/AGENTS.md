@@ -4,15 +4,16 @@ Fuente de la verdad del frontend. El agente debe leerlo completo antes de escrib
 Complementa a `docs/REQUERIMIENTOS.md` (especificación extendida) y convive con el AGENTS.md
 del backend (carpeta raíz), que describe el contrato REST que este frontend consume.
 
-**Estado (2026-10-19, fases 0–3):** Fase 0 (scaffold + tokens + docs), Fase 1 (capa de
-servicio `src/api`) y Fases 2–3 (componentes atómicos + vistas/rutas funcionales:
-HomePage, BoardDetailPage, rehydrator, formularios, toasts, tema tokens) entregadas.
-Verificado con evidencia real: `npm run build` ✓ (71 módulos), render del HomePage y
-ruta `/boards/:id` con estado de error probado en navegador (dev server Vite,
-consola sin errores). Integración completa contra backend real: **pendiente** (en la
-máquina de desarrollo no hay MongoDB ni Docker levantados; probar cuando esté
-disponible con la colección de Postman como guion). Fase 4 (drag & drop nativo) y
-Fase 5 (modo demo, toggle de tema, README final, pruebas registradas): pendientes.
+**Estado (2026-10-19, fases 0–4):** Fase 0 (scaffold + tokens + docs), Fase 1 (capa de
+servicio `src/api`), Fases 2–3 (componentes atómicos + vistas/rutas funcionales) y
+**Fase 4 — drag & drop nativo** (HTML5 drag events, sin librería; el `<select>
+"Mover a…"` queda como fallback accesible y para touch) entregadas. Lógica de
+movimiento única (`handleMove` en BoardDetailPage) compartida por drag y select:
+optimista sobre el rehydrator, reversión ante 400/404 y caso especial del
+404-duplicado resuelto silenciosamente (§4.1). Verificado con `npm run build` ✓ y
+escaneo de código; **la interacción real de arrastre queda pendiente de probarse
+contra el backend corriendo** (no hay MongoDB/Docker en esta máquina). Fase 5
+(modo demo, toggle de tema, README final, registro de pruebas): pendiente.
 
 ---
 

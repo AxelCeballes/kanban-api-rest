@@ -16,3 +16,11 @@
   color: var(--text-muted);
   font-size: var(--font-size-sm);
 }
+
+/* Afabilidad de drag: agarrar la tarjeta con el cursor */
+.ticket-item__draggable { cursor: grab; }
+
+/* La tarjeta que está siendo arrastrada baja su opacidad */
+.ticket-item--dragging .ticket-item__draggable {
+  opacity: 0.45;
+}
