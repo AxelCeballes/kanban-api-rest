@@ -165,8 +165,7 @@ La colección `postman\_collection.json` **todavía no está en el repositorio**
 
 Estado actual del código, que difiere del comportamiento esperado en estos puntos (el detalle priorizado está en la sección 14 de [`AGENTS.md`](./AGENTS.md)):
 
-* **Hooks de cascada:** usan `next`, que en Mongoose 9 debe quitarse; hasta verificarlo contra la base, el borrado en cascada no está garantizado.
-* **Rutas inexistentes:** devuelven el HTML por defecto de Express, no un JSON `{ "error": ... }`.
+* **Hooks de cascada:** verifican el patrón de Mongoose 9 (sin `next`); el borrado en cascada sigue pendiente de verificar contra la base de datos.
 * **Conexión a MongoDB:** si falla, `server.js` solo lo registra en consola y el proceso termina con código `0`.
 * **`errorHandler`:** registra el stack de todos los errores, incluidos los `400`, y para un JSON malformado devuelve el mensaje del parser (en inglés).
 

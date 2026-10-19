@@ -15,6 +15,11 @@ app.use('/api/boards', boardRoutes);
 app.use('/api/boards/:boardId/columns', columnRoutes);
 app.use('/api/boards/:boardId/columns/:columnId/tickets', ticketRoutes);
 
+// Rutas inexistentes: siempre JSON, antes del manejador de errores
+app.use((req, res) => {
+  res.status(404).json({ error: 'La ruta solicitada no existe.' });
+});
+
 // Manejador global de errores (siempre al final)
 app.use(errorHandler);
 
