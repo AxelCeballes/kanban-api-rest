@@ -1,0 +1,35 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font: inherit;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background-color: var(--accent-color);
+  border-color: transparent;
+  color: var(--accent-on);
+}
+
+.btn--danger {
+  border-color: var(--color-danger);
+  background-color: transparent;
+  color: var(--color-danger);
+}
+
+.btn--ghost {
+  border-color: transparent;
+  background-color: transparent;
+  color: var(--text-muted);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

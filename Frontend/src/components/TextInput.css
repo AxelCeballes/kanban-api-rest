@@ -1,0 +1,32 @@
+.text-input__label {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.text-input__field {
+  width: 100%;
+  font: inherit;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.5rem;
+}
+
+.text-input__field[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
+.text-input__error {
+  margin: 0.25rem 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+}
+
+.text-input__hint {
+  margin: 0.25rem 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}

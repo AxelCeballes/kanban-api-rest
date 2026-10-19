@@ -1,0 +1,70 @@
+/*
+ * Kanban Lite — tokens del estilo "Minimalismo Developer"
+ * Única fuente de verdad de colores: los componentes NUNCA hardcodean hex (R36).
+ * Tema claro = :root; tema oscuro = html.dark (la clase la inyecta index.html / useTheme).
+ */
+
+:root {
+  /* Paleta (R33) */
+  --bg-primary: #f9fafb;      /* gris hielo */
+  --bg-surface: #ffffff;      /* tarjetas */
+  --text-primary: #111827;    /* pizarra oscuro */
+  --text-muted: #6b7280;
+  --accent-color: #4f46e5;    /* índigo */
+  --accent-on: #ffffff;
+
+  /* Feedback por semántica HTTP (los códigos los eligen los servicios, no los componentes) */
+  --color-success: #059669;
+  --color-warning: #b45309;
+  --color-danger: #dc2626;
+
+  /* Bordes y estructura */
+  --border-color: #e5e7eb;
+  --border-strong: #d1d5db;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  /* Tipografía: estética IDE/terminal, sin webfonts */
+  --font-base: 'Cascadia Code', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+  --font-size-sm: 0.8125rem;
+  --font-size-md: 0.875rem;
+  --font-size-lg: 1rem;
+  --font-size-xl: 1.25rem;
+}
+
+html.dark {
+  --bg-primary: #0f172a;      /* azul medianoche */
+  --bg-surface: #1e293b;
+  --text-primary: #f8fafc;    /* gris muy claro */
+  --text-muted: #94a3b8;
+  --accent-color: #818cf8;    /* índigo suave */
+  --accent-on: #0f172a;
+
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
+
+  --border-color: #334155;
+  --border-strong: #475569;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-base);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Focus visible accesible por teclado (R35) */
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}

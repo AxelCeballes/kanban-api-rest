@@ -1,0 +1,10 @@
+.add-ticket-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.add-ticket-form__actions {
+  display: flex;
+  gap: 0.5rem;
+}

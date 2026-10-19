@@ -1,0 +1,34 @@
+.ticket-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.6rem;
+}
+
+.ticket-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.ticket-card__title {
+  margin: 0;
+  font-size: var(--font-size-md);
+  overflow-wrap: anywhere;
+}
+
+.ticket-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.ticket-card__description {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}

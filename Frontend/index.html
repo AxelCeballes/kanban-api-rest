@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kanban Lite</title>
+    <script>
+      // Aplica el tema desde el inicio para evitar el parpadeo de estilos.
+      // (R39: localStorage > prefers-color-scheme del sistema)
+      (function () {
+        try {
+          var saved = localStorage.getItem('kanban-lite-theme');
+          var dark = saved
+            ? saved === 'dark'
+            : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {
+          /* localStorage bloqueado: se cae al tema del sistema */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
