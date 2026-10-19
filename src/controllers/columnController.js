@@ -3,10 +3,11 @@ const Column = require('../models/Column');
 const createColumn = async (req, res, next) => {
   try {
     const { boardId } = req.params;
-    const { name } = req.body;
+    const body = req.body ?? {};
+    const { name } = body;
 
-    if (!name || name.trim() === '') {
-      return res.status(400).json({ error: 'El nombre de la columna es requerido.' });
+    if (typeof name !== 'string' || name.trim() === '') {
+      return res.status(400).json({ error: 'El nombre de la columna es requerido y debe ser un texto.' });
     }
 
     const newColumn = await Column.create({ name, board: boardId });

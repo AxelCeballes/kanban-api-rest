@@ -118,8 +118,6 @@ Todos los errores responden con la forma `{ "error": "mensaje" }`.
 |Columna que no pertenece al tablero de la URL, o ticket que no pertenece a la columna|404|
 |Error inesperado|500|
 
-Hoy también responden **500** el body ausente y los valores que no son string en `name`/`title` (ver [Limitaciones conocidas](#limitaciones-conocidas)).
-
 * **Parent Check:** antes de operar sobre una columna se verifica que el tablero exista; antes de operar sobre un ticket, que la columna exista.
 * **Aislamiento de rutas:** la columna debe pertenecer al tablero de la URL y el ticket a la columna de la URL. Un ticket solo puede moverse a columnas del mismo tablero.
 * **Borrado en cascada:** `DELETE` de una columna usa `column.deleteOne()`, y el modelo `Column` define un hook `pre('deleteOne')` de documento que elimina sus tickets. El modelo `Board` define el mismo hook para sus columnas, pero no existe ruta para borrar tableros. Los hooks todavía usan `next` (patrón de Mongoose 8), por lo que su funcionamiento con Mongoose 9 está pendiente de verificar contra la base de datos.
@@ -167,9 +165,6 @@ La colección `postman\_collection.json` **todavía no está en el repositorio**
 
 Estado actual del código, que difiere del comportamiento esperado en estos puntos (el detalle priorizado está en la sección 14 de [`AGENTS.md`](./AGENTS.md)):
 
-* **Body ausente:** un `POST` o `PATCH` sin cuerpo responde `500` en lugar de `400` (en Express 5 `req.body` queda `undefined`).
-* **Tipos no string:** `name` o `title` numéricos, objetos o arreglos responden `500` en lugar de `400`. En el `PATCH`, `column` no se valida como string antes de usarse en la consulta.
-* **`column` vacío en el PATCH:** `""` o `null` se ignoran en silencio y la respuesta es `200` sin mover el ticket.
 * **Hooks de cascada:** usan `next`, que en Mongoose 9 debe quitarse; hasta verificarlo contra la base, el borrado en cascada no está garantizado.
 * **Rutas inexistentes:** devuelven el HTML por defecto de Express, no un JSON `{ "error": ... }`.
 * **Conexión a MongoDB:** si falla, `server.js` solo lo registra en consola y el proceso termina con código `0`.

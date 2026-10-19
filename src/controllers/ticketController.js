@@ -4,15 +4,20 @@ const Column = require('../models/Column');
 const createTicket = async (req, res, next) => {
   try {
     const { boardId, columnId } = req.params;
-    const { title, description } = req.body;
+    const body = req.body ?? {};
+    const { title, description } = body;
 
-    if (!title || title.trim() === '') {
-      return res.status(400).json({ error: 'El título del ticket es requerido.' });
+    if (typeof title !== 'string' || title.trim() === '') {
+      return res.status(400).json({ error: 'El título del ticket es requerido y debe ser un texto.' });
+    }
+
+    if (description !== undefined && typeof description !== 'string') {
+      return res.status(400).json({ error: 'La descripción del ticket debe ser un texto.' });
     }
 
     const newTicket = await Ticket.create({
       title,
-      description: description || '',
+      description: description ?? '',
       column: columnId,
       board: boardId
     });
@@ -26,7 +31,20 @@ const createTicket = async (req, res, next) => {
 const updateTicket = async (req, res, next) => {
   try {
     const { boardId, columnId, ticketId } = req.params;
-    const { title, description, column: newColumnId } = req.body;
+    const body = req.body ?? {};
+    const { title, description, column: newColumnId } = body;
+
+    if (title !== undefined && (typeof title !== 'string' || title.trim() === '')) {
+      return res.status(400).json({ error: 'El título del ticket debe ser un texto no vacío.' });
+    }
+
+    if (description !== undefined && typeof description !== 'string') {
+      return res.status(400).json({ error: 'La descripción del ticket debe ser un texto.' });
+    }
+
+    if (newColumnId !== undefined && (typeof newColumnId !== 'string' || newColumnId.trim() === '')) {
+      return res.status(400).json({ error: 'La columna de destino debe ser un texto no vacío.' });
+    }
 
     const ticket = await Ticket.findOne({ _id: ticketId, column: columnId, board: boardId });
     if (!ticket) {

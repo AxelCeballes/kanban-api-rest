@@ -3,9 +3,11 @@ const Column = require('../models/Column');
 
 const createBoard = async (req, res, next) => {
   try {
-    const { name } = req.body;
-    if (!name || name.trim() === '') {
-      return res.status(400).json({ error: 'El nombre del tablero es requerido.' });
+    const body = req.body ?? {};
+    const { name } = body;
+
+    if (typeof name !== 'string' || name.trim() === '') {
+      return res.status(400).json({ error: 'El nombre del tablero es requerido y debe ser un texto.' });
     }
     const newBoard = await Board.create({ name });
     res.status(201).json(newBoard);
