@@ -120,7 +120,7 @@ Todos los errores responden con la forma `{ "error": "mensaje" }`.
 
 * **Parent Check:** antes de operar sobre una columna se verifica que el tablero exista; antes de operar sobre un ticket, que la columna exista.
 * **Aislamiento de rutas:** la columna debe pertenecer al tablero de la URL y el ticket a la columna de la URL. Un ticket solo puede moverse a columnas del mismo tablero.
-* **Borrado en cascada:** `DELETE` de una columna usa `column.deleteOne()`, y el modelo `Column` define un hook `pre('deleteOne')` de documento que elimina sus tickets. El modelo `Board` define el mismo hook para sus columnas, pero no existe ruta para borrar tableros. Los hooks todavía usan `next` (patrón de Mongoose 8), por lo que su funcionamiento con Mongoose 9 está pendiente de verificar contra la base de datos.
+* **Borrado en cascada:** `DELETE` de una columna usa `column.deleteOne()`, y el modelo `Column` define un hook `pre('deleteOne')` de documento que elimina sus tickets. El modelo `Board` define el mismo hook para sus columnas, pero no existe ruta para borrar tableros. Los hooks ya no usan `next` (patrón de Mongoose 9); su funcionamiento sigue pendiente de verificar contra la base de datos.
 * **Idempotencia:** el PATCH asigna valores finales; repetir la misma petición deja el mismo estado. Repetir un movimiento a otra columna devuelve 404 en el segundo intento, porque el ticket ya no está en la columna de la URL.
 
 ## Modelos
