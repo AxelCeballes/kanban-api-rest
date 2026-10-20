@@ -4,16 +4,19 @@ Fuente de la verdad del frontend. El agente debe leerlo completo antes de escrib
 Complementa a `docs/REQUERIMIENTOS.md` (especificación extendida) y convive con el AGENTS.md
 del backend (carpeta raíz), que describe el contrato REST que este frontend consume.
 
-**Estado (2026-10-19, fases 0–4):** Fase 0 (scaffold + tokens + docs), Fase 1 (capa de
-servicio `src/api`), Fases 2–3 (componentes atómicos + vistas/rutas funcionales) y
-**Fase 4 — drag & drop nativo** (HTML5 drag events, sin librería; el `<select>
-"Mover a…"` queda como fallback accesible y para touch) entregadas. Lógica de
-movimiento única (`handleMove` en BoardDetailPage) compartida por drag y select:
-optimista sobre el rehydrator, reversión ante 400/404 y caso especial del
-404-duplicado resuelto silenciosamente (§4.1). Verificado con `npm run build` ✓ y
-escaneo de código; **la interacción real de arrastre queda pendiente de probarse
-contra el backend corriendo** (no hay MongoDB/Docker en esta máquina). Fase 5
-(modo demo, toggle de tema, README final, registro de pruebas): pendiente.
+**Estado (2026-10-20, fases 0–4 + integración end-to-end):** entregadas la Fase 0–4 y
+la **verificación integrada contra el backend real** (MongoDB 9.0 portable + API en
+puerto 3000): batería `tests/demo-integracion.js` **15/15 OK** (los 6 endpoints, casos
+negativos 400/404, el PATCH repetido con 404 conocido, destino en otro tablero con 400
+y la cascada del DELETE de columna comprobada en la base de datos). Drag & drop nativo
+probado en vivo en el navegador con el driver: ticket creado desde la UI (201,
+toast verde), movido arrastrando a otra columna (optimista + PATCH 200 confirmado en
+la DB) y columna eliminada con confirmación y cascada visible. Mutación importante:
+se corrigió el bug de `ticketStore.getCachedTickets` que devolvía un `[]` nuevo por
+llamada y colgaba el render con `useSyncExternalStore` (detectado al renderizar
+columnas por primera vez — señal de que las fases deben probarse renderizadas).
+Pendiente Fase 5: modo demo con panel request/response, toggle visible de tema,
+atajos de teclado, README final de entrega y despliegue.
 
 ---
 

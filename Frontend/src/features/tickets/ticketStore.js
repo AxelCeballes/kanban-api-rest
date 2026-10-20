@@ -11,6 +11,10 @@
 const ticketsByColumn = new Map();
 const listeners = new Set();
 
+/* Array vacío compartido y estable: useSyncExternalStore compara referencias
+ * del snapshot; crear un [] por llamada provocaría re-render infinito. */
+const EMPTY_TICKETS = [];
+
 function commit() {
   for (const listener of listeners) listener();
 }
@@ -22,7 +26,7 @@ export function subscribe(callback) {
 
 /** Snapshot para el hook: siempre devuelve el MISMO array si no hubo cambios. */
 export function getCachedTickets(columnId) {
-  return ticketsByColumn.get(columnId) ?? [];
+  return ticketsByColumn.get(columnId) ?? EMPTY_TICKETS;
 }
 
 export function hasCachedTicket(columnId, ticketId) {
